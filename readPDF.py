@@ -1,6 +1,7 @@
 from PyPDF2 import PdfReader
 from translation import traducao
 from typing import Optional
+from gerarPDF import gerar
 
 def ler(caminho: str, idioma: str, page: Optional[int] = None, interval: Optional[str] = None, ret: Optional[str] = None) -> None:
     """
@@ -54,8 +55,10 @@ def ler(caminho: str, idioma: str, page: Optional[int] = None, interval: Optiona
     
     # Se o parâmetro `ret` for igual a 'txt', salva o texto traduzido em um arquivo chamado 'retorno.txt'
     if ret == 'txt':
-        with open('retorno.txt', 'w') as arquivo:
-            arquivo.write(texto)
+        texto = texto.replace('•', '')
+        gerar(texto)
+        # with open('retorno.txt', 'w') as arquivo:
+        #     arquivo.write(texto)
     # Caso contrário, imprime o texto traduzido na saída padrão
     else:
         print(texto)
