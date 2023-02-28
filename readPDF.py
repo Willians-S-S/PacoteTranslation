@@ -11,18 +11,25 @@ def ler(caminho: str, idioma: str, page: Optional[int] = None, interval: Optiona
     igual a 'txt', ou impresso na saída padrão se o parâmetro `ret` não for especificado
     ou for diferente de 'txt'.
     
-    Args:
-        caminho (str): o caminho para o arquivo PDF que será lido.
-        idioma (str): o idioma para o qual o texto será traduzido.
-        page (int, optional): a página do PDF a partir da qual o texto será extraído. Se
-            este parâmetro não for especificado, o texto será extraído de todas as páginas
-            do PDF. Default é None.
-        interval (str, optional): um intervalo de páginas (no formato 'x-y') a partir do qual
-            o texto será extraído. Se este parâmetro não for especificado, o texto será extraído
-            de todas as páginas do PDF. Default é None.
-        ret (str, optional): se igual a 'txt', o texto traduzido será salvo em um arquivo
-            chamado 'retorno.txt'. Caso contrário, o texto será impresso na saída padrão.
-            Default é None.
+    Parameters:
+        caminho: str
+            O caminho para o arquivo PDF que será lido.
+        idioma: str 
+            o idioma para o qual o texto será traduzido.
+        page: int, 
+            optional a página do PDF a partir da qual o texto será extraído. 
+            Se este parâmetro não for especificado, o texto será extraído de 
+            todas as páginas do PDF. Default é None.
+        interval: str
+            optional um intervalo de páginas (no formato 'x-y') a partir do 
+            qual o texto será extraído. Se este parâmetro não for especificado,
+            o texto será extraído de todas as páginas do PDF. Default é None.
+        ret: str
+            optional se igual a 'txt', o texto traduzido será salvo em um arquivo
+            chamado 'retorno.txt'. Caso contrário, o texto será impresso na saída 
+            padrão. Default é None.
+    Returns:
+        None
     """
     
     pdf = PdfReader(caminho)  # Lê o arquivo PDF no caminho especificado
