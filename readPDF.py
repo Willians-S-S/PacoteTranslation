@@ -6,6 +6,9 @@ from pytesseract import pytesseract
 
 class TranslatePDF(): 
 
+    def __init__(self):
+        self.listaIMG = []
+
     def ler(self, caminho: str, idioma: str, page: Optional[int] = None, interval: Optional[str] = None, ret: Optional[str] = None) -> None:
         """
         Esta função lê um arquivo PDF no caminho especificado pelo parâmetro `caminho`,
@@ -80,9 +83,20 @@ class TranslatePDF():
         pdf.multi_cell(txt=texto, w=0, align="j")
         pdf.output("recibo.pdf") 
 
-    def extrairIMG():
-        reader = PdfReader("imagem2.pdf")
-        page = reader.pages[0]
+    def extrairIMG(self, all: Optional[int] = None) -> None:
+        reader = PdfReader("b.pdf")
+        if all is not None:
+            print(type(all))
+            if all >= 0 and all <= all:
+                page = reader.pages[all]
+                self.extract_image_of_page(page)
+            else:
+                return None
+        else:
+            for page in reader.pages:
+                self.extract_image_of_page(page)
+    
+    def extract_image_of_page(self, page):
         count = 0
         for image_file_object in page.images:
             print(str(count) + image_file_object.name) #-> aqui pega o nome da imagem
@@ -96,3 +110,7 @@ class TranslatePDF():
         self.traducao(texto, 'en')
             
 # Quando estiver executando chama pra extrair imagem se extrair guarda o nome em uma variavel, aí depois só passar para traduzir
+
+a = TranslatePDF()
+
+a.extrairIMG(1)
