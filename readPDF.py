@@ -9,6 +9,7 @@ class TranslatePDF():
     def __init__(self):
         self.listaIMG = []
 
+    # caso o usuário especifica a página unica, e o intervalo ele vai fazer apenas da página unica
     def ler(self, caminho: str, idioma: str, page: Optional[int] = None, interval: Optional[str] = None, ret: Optional[str] = None) -> None:
         """
         Esta função lê um arquivo PDF no caminho especificado pelo parâmetro `caminho`,
@@ -38,19 +39,22 @@ class TranslatePDF():
         Returns:
             None
         """
-        verifica = True
         pdf = PdfReader(caminho)  # Lê o arquivo PDF no caminho especificado
         texto = ''  # Inicializa a variável que irá armazenar o texto extraído
 
         # Se o parâmetro `page` for especificado, extrai o texto da página correspondente
         if page is not None:
             texto = pdf.pages[page].extract_text()
+            texto = self.traducao(texto, idioma)  # Traduz o texto extraído para o idioma especificado pelo parâmetro `idioma`
 
         # Se o parâmetro `interval` for especificado, extrai o texto de um intervalo de páginas
         elif interval is not None:
             interval = interval.split('-')
-            for i in range(int(interval[0]), int(interval[1]) + 1):
-                texto += pdf.pages[i].extract_text()
+            aux = ''
+            if int(interval[0]) >= 0 and int(interval[1]) <= len(pdf.pages):
+                for i in range(int(interval[0]), int(interval[1]) + 1):
+                    aux = pdf.pages[i].extract_text()
+                    texto += self.traducao(aux, idioma) 
 
         # Caso nenhum dos parâmetros `page` ou `interval` seja especificado, extrai o texto de todas as páginas
         else:
@@ -58,10 +62,6 @@ class TranslatePDF():
             for pag in pdf.pages:
                 aux = pag.extract_text()
                 texto += self.traducao(aux, idioma) 
-            verifica = False
-
-        if verifica:
-            texto = self.traducao(texto, idioma)  # Traduz o texto extraído para o idioma especificado pelo parâmetro `idioma`
             
         # Se o parâmetro `ret` for igual a 'txt', salva o texto traduzido em um arquivo chamado 'retorno.txt'
         if ret == 'txt':
@@ -114,4 +114,4 @@ class TranslatePDF():
 a = TranslatePDF()
 
 # a.extrairIMG(1)
-a.ler("f.pdf", idioma='en', ret='txt', page=2)
+a.ler("f.pdf", idioma='en', ret='txt', page = 0, interval='0-2')
