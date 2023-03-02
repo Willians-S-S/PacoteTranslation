@@ -3,6 +3,7 @@ from googletrans import Translator
 from typing import Optional
 from fpdf import FPDF
 from pytesseract import pytesseract
+import os
 
 class TranslatePDF():
 
@@ -10,7 +11,16 @@ class TranslatePDF():
         self.listaIMG = []
 
     # caso o usuário especifica a página unica, e o intervalo ele vai fazer apenas da página unica
-    def ler(self, caminho: str, idioma: str, page: Optional[int] = None, interval: Optional[str] = None, ret: Optional[str] = None) -> None:
+    def ler(
+            self, 
+            caminho: str, 
+            idioma: str, 
+            page: Optional[int] = None, 
+            interval: Optional[str] = None, 
+            ret: Optional[str] = None,
+            check_img: Optional[bool] = None,
+            caminho_save_img: Optional[str] = None
+            ) -> None:
         """
         Esta função lê um arquivo PDF no caminho especificado pelo parâmetro `caminho`,
         extrai o texto do PDF usando a biblioteca `PdfReader` e o traduz para o idioma
@@ -46,6 +56,10 @@ class TranslatePDF():
         if page is not None:
             texto = pdf.pages[page].extract_text()
             texto = self.traducao(texto, idioma)  # Traduz o texto extraído para o idioma especificado pelo parâmetro `idioma`
+            if check_img:
+                if caminho_save_img is None:  
+                    caminho_save_img = os.getcwd()
+                self.extract_image_of_page(pdf.pages[page], )
 
         # Se o parâmetro `interval` for especificado, extrai o texto de um intervalo de páginas
         elif interval is not None:
@@ -54,17 +68,25 @@ class TranslatePDF():
             if int(interval[0]) >= 0 and int(interval[1]) <= len(pdf.pages):
                 for i in range(int(interval[0]), int(interval[1]) + 1):
                     aux = pdf.pages[i].extract_text()
-                    texto += self.traducao(aux, idioma) 
+                    texto += self.traducao(aux, idioma)
+                    if check_img:    
+                        if caminho_save_img is None:  
+                            caminho_save_img = os.getcwd()
+                        self.extract_image_of_page(pdf.pages[i])
 
         # Caso nenhum dos parâmetros `page` ou `interval` seja especificado, extrai o texto de todas as páginas
         else:
             aux = ''
             for pag in pdf.pages:
                 aux = pag.extract_text()
-                texto += self.traducao(aux, idioma) 
+                texto += self.traducao(aux, idioma)
+                if check_img:    
+                    if caminho_save_img is None:  
+                        caminho_save_img = os.getcwd()
+                    self.extract_image_of_page(aux) 
             
         # Se o parâmetro `ret` for igual a 'txt', salva o texto traduzido em um arquivo chamado 'retorno.txt'
-        if ret == 'txt':
+        if ret == 'pdf':
             texto = texto.replace('•', '')
             self.gerarPDF(texto)
         # Caso contrário, imprime o texto traduzido na saída padrão
@@ -73,8 +95,8 @@ class TranslatePDF():
 
     def traducao(self, texto, idioma):
         trans = Translator()
-        a = trans.translate(texto, dest=idioma)
-        return a.text
+        textoTraduzido = trans.translate(texto, dest=idioma)
+        return textoTraduzido.text
 
     def gerarPDF(self, texto) -> None:
         pdf = FPDF()
@@ -86,7 +108,6 @@ class TranslatePDF():
     def extrairIMG(self, all: Optional[int] = None) -> None:
         reader = PdfReader("b.pdf")
         if all is not None:
-            print(type(all))
             if all >= 0 and all <= all:
                 page = reader.pages[all]
                 self.extract_image_of_page(page)
@@ -96,7 +117,9 @@ class TranslatePDF():
             for page in reader.pages:
                 self.extract_image_of_page(page)
 
-    def extract_image_of_page(self, page):
+    def extract_image_of_page(self, page, caminho_save: Optional[str] = None):
+        if caminho_save is None:
+            caminho_save = os.getcwd()
         count = 0
         for image_file_object in page.images:
             print(str(count) + image_file_object.name) #-> aqui pega o nome da imagem
@@ -104,14 +127,16 @@ class TranslatePDF():
                 fp.write(image_file_object.data)
                 count += 1
 
-    def lerImg(self):
-        texto = pytesseract.image_to_string('dockerfile.jpg')
+    def lerImg(self, caminho_image, idioma: Optional[str] = None):
+        texto = pytesseract.image_to_string(caminho_image)
+        if idioma is not None:
+            texto = self.traducao(texto, idioma)
         print(texto)
-        self.traducao(texto, 'en')
 
 # Quando estiver executando chama pra extrair imagem se extrair guarda o nome em uma variavel, aí depois só passar para traduzir
 
 a = TranslatePDF()
 
 # a.extrairIMG(1)
-a.ler("f.pdf", idioma='en', ret='txt', page = 0, interval='0-2')
+a.ler("f.pdf", idioma='en', ret='pdf', page = 0, check_img=True)
+# a.lerImg('0X5.jpg', 'pt')
