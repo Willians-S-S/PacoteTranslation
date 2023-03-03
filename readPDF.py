@@ -63,7 +63,7 @@ class TranslatePDF():
                 if check_img:
                     if caminho_save_img is None:  
                         caminho_save_img = os.getcwd()
-                    self.extract_image_of_page(pdf.pages[page])
+                    self.extract_image_of_page(pdf.pages[page], caminho_save_img)
 
             # Se o parâmetro `interval` for especificado, extrai o texto de um intervalo de páginas
             elif interval is not None:
@@ -77,7 +77,7 @@ class TranslatePDF():
                         if check_img:    
                             if caminho_save_img is None:  
                                 caminho_save_img = os.getcwd()
-                            self.extract_image_of_page(pdf.pages[i])
+                            self.extract_image_of_page(pdf.pages[i], caminho_save_img)
 
             # Caso nenhum dos parâmetros `page` ou `interval` seja especificado, extrai o texto de todas as páginas
             else:
@@ -89,7 +89,7 @@ class TranslatePDF():
                     if check_img:    
                         if caminho_save_img is None:  
                             caminho_save_img = os.getcwd()
-                        self.extract_image_of_page(aux) 
+                        self.extract_image_of_page(aux, caminho_save_img) 
                 
             # Se o parâmetro `ret` for igual a 'txt', salva o texto traduzido em um arquivo chamado 'retorno.txt'
             if ret == 'pdf':
@@ -146,36 +146,44 @@ class TranslatePDF():
             e = str(e)
             print(f"O {e[:13]} não é suportado pela a fonte times, tente novamente sem a saída em pdf.")
 
-    def extrairIMG(self, caminho, all: Optional[int] = None) -> None:
-        reader = PdfReader(caminho)
-        if all is not None:
-            if all >= 0 and all <= all:
-                page = reader.pages[all]
-                self.extract_image_of_page(page)
+    def extrairIMG(self, caminho, caminho_save: Optional[str] = None, all: Optional[int] = None) -> None:
+        if os.path.isfile(caminho):
+            if caminho_save is None:
+                caminho_save = os.getcwd()
+
+            reader = PdfReader(caminho)
+            if all is not None:
+                if all >= 0 and all <= all:
+                    page = reader.pages[all]
+                    self.extract_image_of_page(page)
+                else:
+                    return None
             else:
-                return None
+                for page in reader.pages:
+                    self.extract_image_of_page(page)
         else:
-            for page in reader.pages:
-                self.extract_image_of_page(page)
+            print("Arquivo não encontrado.")
 
     def extract_image_of_page(self, page, caminho_save: Optional[str] = None):
-        if caminho_save is None:
-            caminho_save = os.getcwd()
         count = 0
         for image_file_object in page.images:
             print(str(count) + image_file_object.name) #-> aqui pega o nome da imagem
-            with open(str(count) + image_file_object.name, "wb") as fp:
+            with open(caminho_save + "/" + str(count) + image_file_object.name, "wb") as fp:
+                print(caminho_save + "/" + str(count) + image_file_object.name)
                 fp.write(image_file_object.data)
                 count += 1
 
     def lerImg(self, caminho_image, idioma: Optional[str] = None):
-        texto = pytesseract.image_to_string(caminho_image)
-        if idioma is not None:
-            texto = self.traducao(texto, idioma)
-        print(texto)
+        if os.path.isfile(caminho_image):
+            texto = pytesseract.image_to_string(caminho_image)
+            if idioma is not None:
+                texto = self.traducao(texto, idioma)
+            print(texto)
+        else:
+            print('Arquivo não encontrad.')
 
 a = TranslatePDF()
 
 # a.extrairIMG(1)
-a.ler("/home/will/Documentos/SI II/Resumo.pdf", idioma='en', page=0, ret='pdf')
+a.ler("g.pdf", idioma='en', page=0, ret='pdf', check_img=True, caminho_save_img='/home/will/Documentos')
 # # a.lerImg('mao3.jpg')
