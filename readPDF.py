@@ -4,6 +4,7 @@ from typing import Optional
 from fpdf import FPDF
 from pytesseract import pytesseract
 import os
+from fpdf.errors import FPDFUnicodeEncodingException
 
 class TranslatePDF():
 
@@ -55,7 +56,23 @@ class TranslatePDF():
         # Se o parâmetro `page` for especificado, extrai o texto da página correspondente
         if page is not None:
             texto = pdf.pages[page].extract_text()
-            texto = self.traducao(texto, idioma)  # Traduz o texto extraído para o idioma especificado pelo parâmetro `idioma`
+            tam = 500
+            texto2 = ''
+            while len(texto) > tam:
+                if texto[tam] == ' ':
+                    aux = texto[:tam]
+                    texto = texto[tam:]
+                    texto2 += self.traducao(aux, idioma) 
+                else:
+                    while texto[tam] != ' ':
+                        tam -= 1
+
+                    if texto[tam] == ' ':
+                        aux = texto[:tam]
+                        texto = texto[tam:]
+                        texto2 += self.traducao(aux, idioma) 
+            else:
+                texto2 += self.traducao(texto, idioma)  # Traduz o texto extraído para o idioma especificado pelo parâmetro `idioma`
             if check_img:
                 if caminho_save_img is None:  
                     caminho_save_img = os.getcwd()
@@ -87,11 +104,11 @@ class TranslatePDF():
             
         # Se o parâmetro `ret` for igual a 'txt', salva o texto traduzido em um arquivo chamado 'retorno.txt'
         if ret == 'pdf':
-            texto = texto.replace('•', '')
-            self.gerarPDF(texto)
+            texto2 = texto2.replace('•', '').replace("``",'')
+            self.gerarPDF(texto2)
         # Caso contrário, imprime o texto traduzido na saída padrão
         else:
-            print(texto)
+            print(texto2)
 
     def traducao(self, texto, idioma):
         trans = Translator()
@@ -99,14 +116,18 @@ class TranslatePDF():
         return textoTraduzido.text
 
     def gerarPDF(self, texto) -> None:
-        pdf = FPDF()
-        pdf.add_page()
-        pdf.set_font("helvetica", "", 14)
-        pdf.multi_cell(txt=texto, w=0, align="j")
-        pdf.output("recibo.pdf")
+        try:
+            pdf = FPDF()
+            pdf.add_page()
+            pdf.set_font("times", "", 14)
+            pdf.multi_cell(txt=texto, w=0, align="j")
+            pdf.output("recibo.pdf")
+        except FPDFUnicodeEncodingException as e:
+            e = str(e)
+            print(f"O {e[:13]} não é suportado pela a fonte times, tente novamente sem a saída em pdf.")
 
-    def extrairIMG(self, all: Optional[int] = None) -> None:
-        reader = PdfReader("b.pdf")
+    def extrairIMG(self, caminho, all: Optional[int] = None) -> None:
+        reader = PdfReader(caminho)
         if all is not None:
             if all >= 0 and all <= all:
                 page = reader.pages[all]
@@ -138,5 +159,5 @@ class TranslatePDF():
 a = TranslatePDF()
 
 # a.extrairIMG(1)
-a.ler("f.pdf", idioma='en', ret='pdf', page = 0, check_img=True)
-# a.lerImg('0X5.jpg', 'pt')
+a.ler("teste.pdf", idioma='en', page = 0)
+# # a.lerImg('mao3.jpg')
