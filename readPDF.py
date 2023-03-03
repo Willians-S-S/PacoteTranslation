@@ -50,78 +50,98 @@ class TranslatePDF():
         Returns:
             None
         """
-        pdf = PdfReader(caminho)  # Lê o arquivo PDF no caminho especificado
-        texto = ''  # Inicializa a variável que irá armazenar o texto extraído
+        if os.path.isfile(caminho):
+            pdf = PdfReader(caminho)  # Lê o arquivo PDF no caminho especificado
+            texto = ''  # Inicializa a variável que irá armazenar o texto extraído
 
-        # Se o parâmetro `page` for especificado, extrai o texto da página correspondente
-        if page is not None:
-            texto = pdf.pages[page].extract_text()
-            tam = 500
-            texto2 = ''
-            while len(texto) > tam:
-                if texto[tam] == ' ':
-                    aux = texto[:tam]
-                    texto = texto[tam:]
-                    texto2 += self.traducao(aux, idioma) 
-                else:
-                    while texto[tam] != ' ':
-                        tam -= 1
+            # Se o parâmetro `page` for especificado, extrai o texto da página correspondente
+            if page is not None:
+                texto = pdf.pages[page].extract_text()
 
-                    if texto[tam] == ' ':
-                        aux = texto[:tam]
-                        texto = texto[tam:]
-                        texto2 += self.traducao(aux, idioma) 
+                texto = self.trans_text_bigger(texto, idioma)
+                
+                if check_img:
+                    if caminho_save_img is None:  
+                        caminho_save_img = os.getcwd()
+                    self.extract_image_of_page(pdf.pages[page])
+
+            # Se o parâmetro `interval` for especificado, extrai o texto de um intervalo de páginas
+            elif interval is not None:
+                interval = interval.split('-')
+                aux = ''
+                if int(interval[0]) >= 0 and int(interval[1]) <= len(pdf.pages):
+                    for i in range(int(interval[0]), int(interval[1]) + 1):
+                        aux = pdf.pages[i].extract_text()
+                        texto += self.trans_text_bigger(aux, idioma)
+                        # texto += self.traducao(aux, idioma)
+                        if check_img:    
+                            if caminho_save_img is None:  
+                                caminho_save_img = os.getcwd()
+                            self.extract_image_of_page(pdf.pages[i])
+
+            # Caso nenhum dos parâmetros `page` ou `interval` seja especificado, extrai o texto de todas as páginas
             else:
-                texto2 += self.traducao(texto, idioma)  # Traduz o texto extraído para o idioma especificado pelo parâmetro `idioma`
-            if check_img:
-                if caminho_save_img is None:  
-                    caminho_save_img = os.getcwd()
-                self.extract_image_of_page(pdf.pages[page], )
-
-        # Se o parâmetro `interval` for especificado, extrai o texto de um intervalo de páginas
-        elif interval is not None:
-            interval = interval.split('-')
-            aux = ''
-            if int(interval[0]) >= 0 and int(interval[1]) <= len(pdf.pages):
-                for i in range(int(interval[0]), int(interval[1]) + 1):
-                    aux = pdf.pages[i].extract_text()
-                    texto += self.traducao(aux, idioma)
+                aux = ''
+                for pag in pdf.pages:
+                    aux = pag.extract_text()
+                    texto += self.trans_text_bigger(aux, idioma)
+                    # texto += self.traducao(aux, idioma)
                     if check_img:    
                         if caminho_save_img is None:  
                             caminho_save_img = os.getcwd()
-                        self.extract_image_of_page(pdf.pages[i])
+                        self.extract_image_of_page(aux) 
+                
+            # Se o parâmetro `ret` for igual a 'txt', salva o texto traduzido em um arquivo chamado 'retorno.txt'
+            if ret == 'pdf':
+                if '/' in caminho:
+                    tam = len(caminho) - 1
+                    while caminho[tam] != '/':
+                        print(caminho[tam])
+                        tam -= 1
+                    caminho = caminho[tam + 1:]
+                
+                nome_arquivo = 'saida_' + caminho
+                
+                texto = texto.replace('•', '')
+                self.gerarPDF(texto, nome_arquivo)
 
-        # Caso nenhum dos parâmetros `page` ou `interval` seja especificado, extrai o texto de todas as páginas
+            # Caso contrário, imprime o texto traduzido na saída padrão
+            else:
+                print(texto)
         else:
-            aux = ''
-            for pag in pdf.pages:
-                aux = pag.extract_text()
-                texto += self.traducao(aux, idioma)
-                if check_img:    
-                    if caminho_save_img is None:  
-                        caminho_save_img = os.getcwd()
-                    self.extract_image_of_page(aux) 
-            
-        # Se o parâmetro `ret` for igual a 'txt', salva o texto traduzido em um arquivo chamado 'retorno.txt'
-        if ret == 'pdf':
-            texto2 = texto2.replace('•', '').replace("``",'')
-            self.gerarPDF(texto2)
-        # Caso contrário, imprime o texto traduzido na saída padrão
+            print("Arquivo não encontrado")
+    
+    def trans_text_bigger(self, texto, idioma):
+        tam = 500
+        texto2 = ''
+        while len(texto) > tam:
+            if texto[tam] == ' ':
+                aux = texto[:tam]
+                texto = texto[tam:]
+                texto2 += self.traducao(aux, idioma) 
+            else:
+                while texto[tam] != ' ':
+                    tam -= 1
+                if texto[tam] == ' ':
+                    aux = texto[:tam]
+                    texto = texto[tam:]
+                    texto2 += self.traducao(aux, idioma)
         else:
-            print(texto2)
+            texto2 += self.traducao(texto, idioma)  # Traduz o texto extraído para o idioma especificado pelo parâmetro `idioma`
+        return texto2
 
     def traducao(self, texto, idioma):
         trans = Translator()
         textoTraduzido = trans.translate(texto, dest=idioma)
         return textoTraduzido.text
 
-    def gerarPDF(self, texto) -> None:
+    def gerarPDF(self, texto, nome_arquivo) -> None:
         try:
             pdf = FPDF()
             pdf.add_page()
             pdf.set_font("times", "", 14)
             pdf.multi_cell(txt=texto, w=0, align="j")
-            pdf.output("recibo.pdf")
+            pdf.output(nome_arquivo)
         except FPDFUnicodeEncodingException as e:
             e = str(e)
             print(f"O {e[:13]} não é suportado pela a fonte times, tente novamente sem a saída em pdf.")
@@ -154,10 +174,8 @@ class TranslatePDF():
             texto = self.traducao(texto, idioma)
         print(texto)
 
-# Quando estiver executando chama pra extrair imagem se extrair guarda o nome em uma variavel, aí depois só passar para traduzir
-
 a = TranslatePDF()
 
 # a.extrairIMG(1)
-a.ler("teste.pdf", idioma='en', page = 0)
+a.ler("/home/will/Documentos/SI II/Resumo.pdf", idioma='en', page=0, ret='pdf')
 # # a.lerImg('mao3.jpg')
