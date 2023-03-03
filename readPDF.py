@@ -16,6 +16,7 @@ class TranslatePDF():
             self, 
             caminho: str, 
             idioma: str, 
+            caminho_save_pdf: Optional[str] = None,
             page: Optional[int] = None, 
             interval: Optional[str] = None, 
             ret: Optional[str] = None,
@@ -63,6 +64,7 @@ class TranslatePDF():
                 if check_img:
                     if caminho_save_img is None:  
                         caminho_save_img = os.getcwd()
+                    
                     self.extract_image_of_page(pdf.pages[page], caminho_save_img)
 
             # Se o parâmetro `interval` for especificado, extrai o texto de um intervalo de páginas
@@ -103,7 +105,11 @@ class TranslatePDF():
                 nome_arquivo = 'saida_' + caminho
                 
                 texto = texto.replace('•', '')
-                self.gerarPDF(texto, nome_arquivo)
+                
+                if caminho_save_pdf is None:
+                    caminho_save_pdf = os.getcwd()
+
+                self.gerarPDF(texto, nome_arquivo, caminho_save_pdf)
 
             # Caso contrário, imprime o texto traduzido na saída padrão
             else:
@@ -135,13 +141,13 @@ class TranslatePDF():
         textoTraduzido = trans.translate(texto, dest=idioma)
         return textoTraduzido.text
 
-    def gerarPDF(self, texto, nome_arquivo) -> None:
+    def gerarPDF(self, texto, nome_arquivo, caminho_save_pdf) -> None:
         try:
             pdf = FPDF()
             pdf.add_page()
             pdf.set_font("times", "", 14)
             pdf.multi_cell(txt=texto, w=0, align="j")
-            pdf.output(nome_arquivo)
+            pdf.output(caminho_save_pdf + '/' + nome_arquivo)
         except FPDFUnicodeEncodingException as e:
             e = str(e)
             print(f"O {e[:13]} não é suportado pela a fonte times, tente novamente sem a saída em pdf.")
@@ -175,7 +181,14 @@ class TranslatePDF():
 
     def lerImg(self, caminho_image, idioma: Optional[str] = None):
         if os.path.isfile(caminho_image):
+            sistema = os.name
+
+            if sistema == 'nt':
+                caminho_tesseract = r"C:\Program Files\Tesseract-OCR\tesseract.exe"
+                pytesseract.tesseract_cmd = caminho_tesseract
+
             texto = pytesseract.image_to_string(caminho_image)
+            
             if idioma is not None:
                 texto = self.traducao(texto, idioma)
             print(texto)
