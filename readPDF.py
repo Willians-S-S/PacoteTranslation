@@ -8,8 +8,7 @@ from fpdf.errors import FPDFUnicodeEncodingException
 
 class TranslatePDF():
     """
-        A classe TranslatePDF instancia um objeto capaz de extrair texto e imagem de um pdf, extrair texto de um imagem, traduzir
-        textos,  criar pdf a partir de um texto.
+       A classe TranslatePDF é capaz de extrair texto e imagem de um PDF, bem como extrair texto de uma imagem, traduzir textos longos e curtos. Além disso, ela também permite criar um PDF a partir de um texto.
 
         Methods
         -------
@@ -234,7 +233,7 @@ class TranslatePDF():
             e = str(e)
             print(f"O {e[:13]} não é suportado pela a fonte times, tente novamente sem a saída em pdf.")
 
-    def extrairIMG(self, caminho, caminho_save: Optional[str] = None, all: Optional[int] = None) -> None:
+    def extrairIMG(self, caminho, caminho_save: Optional[str] = None, all_page: Optional[int] = None) -> None:
         """
             Extrai as imagens de um arquivo PDF.
 
@@ -244,7 +243,7 @@ class TranslatePDF():
                 Caminho do arquivo PDF a ser processado.
             caminho_save: str, optional 
                 Caminho onde as imagens extraídas serão salvas. Se não for especificado, o diretório atual será usado.
-            all: int, optional
+            all_page: int, optional
                 Índice da página que contém a imagem a ser extraída. Se não for especificado, todas as páginas serão processadas.
             
             Return
@@ -255,9 +254,9 @@ class TranslatePDF():
             if caminho_save is None:
                 caminho_save = os.getcwd()
             reader = PdfReader(caminho)
-            if all is not None:
-                if all >= 0 and all <= all:
-                    page = reader.pages[all]
+            if all_page is not None:
+                if all_page >= 0 and all_page <= all_page:
+                    page = reader.pages[all_page]
                     self.extract_image_page(page)
                 else:
                     return None
@@ -332,5 +331,10 @@ a = TranslatePDF()
 # Troque \ pela / para indicar o diretorio
 "C:/Users/09wei/Downloads/b.pdf"
 
-a.extract_data_pdf("C:/Users/09wei/Downloads/b.pdf", caminho_save_pdf="C:/Users/09wei/Downloads",  idioma='pt', ret='pdf', page=0)
+a.extract_data_pdf("C:/Users/09wei/Downloads/b.pdf", 
+                   caminho_save_pdf="C:/Users/09wei/Downloads",  
+                   idioma='pt', 
+                   ret='pdf', 
+                   page=0
+                   )
 # a.extract_text_img('R.png')
