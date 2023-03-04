@@ -1,5 +1,6 @@
 # Descrição
-A classe TranslatePDF é capaz de extrair texto e imagem de um PDF, bem como extrair texto de uma imagem, traduzir textos longos e curtos. Além disso, ela também permite criar um PDF a partir de um texto.
+A classe TranslatePDF é capaz de extrair texto e imagem de um PDF, bem como extrair texto de uma imagem, traduzir textos longos e curtos. Além disso, ela também permite criar um PDF a partir de um texto. <br>
+Acesse: https://pypi.org/project/TranslationPDF/
 
 # Funcionabilidades
 * Extrai texto e imagem do PDF <br>
@@ -10,7 +11,12 @@ A classe TranslatePDF é capaz de extrair texto e imagem de um PDF, bem como ext
 * Extrai texto da imagem. <br>
 
 # Como usar
-Para usar deve-se instânciar a classe TranslatePDF
+Siga os passos
+
+## Importar a biblioteca <br>
+```python
+    from PDF_read import TranslatePDF
+```
 
 ## Deve-se Criar um objeto da classe 
 
