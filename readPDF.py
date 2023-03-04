@@ -12,7 +12,7 @@ class TranslatePDF():
         self.listaIMG = []
 
     # caso o usuário especifica a página unica, e o intervalo ele vai fazer apenas da página unica
-    def ler(
+    def extract_data_pdf(
             self, 
             caminho: str, 
             idioma: str, 
@@ -58,14 +58,13 @@ class TranslatePDF():
             # Se o parâmetro `page` for especificado, extrai o texto da página correspondente
             if page is not None:
                 texto = pdf.pages[page].extract_text()
-
                 texto = self.trans_text_bigger(texto, idioma)
                 
                 if check_img:
                     if caminho_save_img is None:  
                         caminho_save_img = os.getcwd()
                     
-                    self.extract_image_of_page(pdf.pages[page], caminho_save_img)
+                    self.extract_image_page(pdf.pages[page], caminho_save_img)
 
             # Se o parâmetro `interval` for especificado, extrai o texto de um intervalo de páginas
             elif interval is not None:
@@ -75,11 +74,10 @@ class TranslatePDF():
                     for i in range(int(interval[0]), int(interval[1]) + 1):
                         aux = pdf.pages[i].extract_text()
                         texto += self.trans_text_bigger(aux, idioma)
-                        # texto += self.traducao(aux, idioma)
                         if check_img:    
                             if caminho_save_img is None:  
                                 caminho_save_img = os.getcwd()
-                            self.extract_image_of_page(pdf.pages[i], caminho_save_img)
+                            self.extract_image_page(pdf.pages[i], caminho_save_img)
 
             # Caso nenhum dos parâmetros `page` ou `interval` seja especificado, extrai o texto de todas as páginas
             else:
@@ -87,11 +85,10 @@ class TranslatePDF():
                 for pag in pdf.pages:
                     aux = pag.extract_text()
                     texto += self.trans_text_bigger(aux, idioma)
-                    # texto += self.traducao(aux, idioma)
                     if check_img:    
                         if caminho_save_img is None:  
                             caminho_save_img = os.getcwd()
-                        self.extract_image_of_page(aux, caminho_save_img) 
+                        self.extract_image_page(aux, caminho_save_img) 
                 
             # Se o parâmetro `ret` for igual a 'txt', salva o texto traduzido em um arquivo chamado 'retorno.txt'
             if ret == 'pdf':
@@ -144,11 +141,14 @@ class TranslatePDF():
 
     def gerarPDF(self, texto, nome_arquivo, caminho_save_pdf) -> None:
         try:
-            pdf = FPDF()
-            pdf.add_page()
-            pdf.set_font("times", "", 14)
-            pdf.multi_cell(txt=texto, w=0, align="j")
-            pdf.output(caminho_save_pdf + '/' + nome_arquivo)
+            if os.path.isdir(caminho_save_pdf):
+                pdf = FPDF()
+                pdf.add_page()
+                pdf.set_font("times", "", 14)
+                pdf.multi_cell(txt=texto, w=0, align="j")
+                pdf.output(caminho_save_pdf + '/' + nome_arquivo)
+            else:
+                print("Diretório para salvar pdf não encontrado.")
         except FPDFUnicodeEncodingException as e:
             e = str(e)
             print(f"O {e[:13]} não é suportado pela a fonte times, tente novamente sem a saída em pdf.")
@@ -162,25 +162,27 @@ class TranslatePDF():
             if all is not None:
                 if all >= 0 and all <= all:
                     page = reader.pages[all]
-                    self.extract_image_of_page(page)
+                    self.extract_image_page(page)
                 else:
                     return None
             else:
                 for page in reader.pages:
-                    self.extract_image_of_page(page)
+                    self.extract_image_page(page)
         else:
             print("Arquivo não encontrado.")
 
-    def extract_image_of_page(self, page, caminho_save: Optional[str] = None):
+    def extract_image_page(self, page, caminho_save):
         count = 0
-        for image_file_object in page.images:
-            print(str(count) + image_file_object.name) #-> aqui pega o nome da imagem
-            with open(caminho_save + "/" + str(count) + image_file_object.name, "wb") as fp:
-                print(caminho_save + "/" + str(count) + image_file_object.name)
-                fp.write(image_file_object.data)
-                count += 1
+        if os.path.isdir(caminho_save):
+            for image_file_object in page.images:
+                with open(caminho_save + "/" + str(count) + image_file_object.name, "wb") as fp:
+                    print(caminho_save + "/" + str(count) + image_file_object.name)
+                    fp.write(image_file_object.data)
+                    count += 1
+        else:
+            print('Diretório para salva imagem não encontrado.')
 
-    def lerImg(self, caminho_image, idioma: Optional[str] = None):
+    def extract_text_img(self, caminho_image, idioma: Optional[str] = None):
         if os.path.isfile(caminho_image):
             sistema = os.name
 
@@ -208,5 +210,5 @@ a = TranslatePDF()
 # Troque \ pela / para indicar o diretorio
 "C:/Users/09wei/Downloads/b.pdf"
 
-a.ler("C:/Users/09wei/Downloads/b.pdf", caminho_save_pdf="C:/Users/09wei/Downloads",  idioma='pt', ret='pdf', page=0)
-# a.lerImg('R.png')
+a.extract_data_pdf("C:/Users/09wei/Downloads/b.pdf", caminho_save_pdf="C:/Users/09wei/Downloads",  idioma='pt', ret='pdf', page=0)
+# a.extract_text_img('R.png')
