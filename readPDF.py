@@ -97,8 +97,9 @@ class TranslatePDF():
             texto = ''  # Inicializa a variável que irá armazenar o texto extraído
 
             # Se o parâmetro `page` for especificado, extrai o texto da página correspondente
-            if page is not None:
+            if page is not None and page >= 0 and page < len(pdf.pages):
                 texto = pdf.pages[page].extract_text()
+                texto = texto.replace('\n', ' ')
                 texto = self.trans_text_bigger(texto, idioma)
                 
                 if check_img:
@@ -110,9 +111,10 @@ class TranslatePDF():
             elif interval is not None:
                 interval = interval.split('-')
                 aux = ''
-                if int(interval[0]) >= 0 and int(interval[1]) <= len(pdf.pages):
+                if int(interval[0]) >= 0 and int(interval[1]) < len(pdf.pages):
                     for i in range(int(interval[0]), int(interval[1]) + 1):
                         aux = pdf.pages[i].extract_text()
+                        aux = aux.replace('\n', ' ')
                         texto += self.trans_text_bigger(aux, idioma)
                         if check_img:    
                             if caminho_save_img is None:  
@@ -124,6 +126,7 @@ class TranslatePDF():
                 aux = ''
                 for pag in pdf.pages:
                     aux = pag.extract_text()
+                    aux = aux.replace('\n', ' ')
                     texto += self.trans_text_bigger(aux, idioma)
                     if check_img:    
                         if caminho_save_img is None:  
@@ -198,9 +201,12 @@ class TranslatePDF():
             ------
                 Retorna o texto traduzido para o idioma especificado.
         """
-        trans = Translator()
-        textoTraduzido = trans.translate(texto, dest=idioma)
-        return textoTraduzido.text
+        try:
+            trans = Translator()
+            textoTraduzido = trans.translate(texto, dest=idioma)
+            return textoTraduzido.text
+        except:
+            print("Não foi possível traduzir o texto.")
 
     def gerarPDF(self, texto, nome_arquivo, caminho_save_pdf) -> None:
         """
@@ -308,8 +314,6 @@ class TranslatePDF():
             sistema = os.name
 
             if sistema == 'nt':
-                # C:\Users\09wei\AppData\Local\Programs\Tesseract-OCR\tesseract.exe
-                # https://github.com/UB-Mannheim/tesseract/wiki
                 usuario = os.getlogin()
                 caminho_tesseract = f"C:\\Users\\{usuario}\AppData\\Local\\Programs\\Tesseract-OCR\\tesseract.exe"
                 pytesseract.tesseract_cmd = caminho_tesseract
@@ -322,19 +326,3 @@ class TranslatePDF():
         else:
             print('Arquivo não encontrad.')
 
-a = TranslatePDF()
-
-# a.extrairIMG(1)
-
-# No windows
-"C:\Users\09wei\Downloads\b.pdf"
-# Troque \ pela / para indicar o diretorio
-"C:/Users/09wei/Downloads/b.pdf"
-
-a.extract_data_pdf("C:/Users/09wei/Downloads/b.pdf", 
-                   caminho_save_pdf="C:/Users/09wei/Downloads",  
-                   idioma='pt', 
-                   ret='pdf', 
-                   page=0
-                   )
-# a.extract_text_img('R.png')
