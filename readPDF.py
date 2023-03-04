@@ -95,6 +95,7 @@ class TranslatePDF():
                 
             # Se o parâmetro `ret` for igual a 'txt', salva o texto traduzido em um arquivo chamado 'retorno.txt'
             if ret == 'pdf':
+                print(caminho)
                 if '/' in caminho:
                     tam = len(caminho) - 1
                     while caminho[tam] != '/':
@@ -104,7 +105,7 @@ class TranslatePDF():
                 
                 nome_arquivo = 'saida_' + caminho
                 
-                texto = texto.replace('•', '')
+                texto = texto.replace('•', '').replace('–','').replace('𝑥','')
                 
                 if caminho_save_pdf is None:
                     caminho_save_pdf = os.getcwd()
@@ -201,5 +202,11 @@ class TranslatePDF():
 a = TranslatePDF()
 
 # a.extrairIMG(1)
-a.ler("prova_final.pdf", idioma='pt', page=0)
+
+# No windows
+"C:\Users\09wei\Downloads\b.pdf"
+# Troque \ pela / para indicar o diretorio
+"C:/Users/09wei/Downloads/b.pdf"
+
+a.ler("C:/Users/09wei/Downloads/b.pdf", caminho_save_pdf="C:/Users/09wei/Downloads",  idioma='pt', ret='pdf', page=0)
 # a.lerImg('R.png')
