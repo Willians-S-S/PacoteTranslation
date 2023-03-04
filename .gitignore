@@ -5,3 +5,5 @@ __pycache__
 *.png
 *.txt
 teste.py
+__init__.py
+readPDF
