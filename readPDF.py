@@ -184,7 +184,10 @@ class TranslatePDF():
             sistema = os.name
 
             if sistema == 'nt':
-                caminho_tesseract = r"C:\Program Files\Tesseract-OCR\tesseract.exe"
+                # C:\Users\09wei\AppData\Local\Programs\Tesseract-OCR\tesseract.exe
+                # https://github.com/UB-Mannheim/tesseract/wiki
+                usuario = os.getlogin()
+                caminho_tesseract = f"C:\\Users\\{usuario}\AppData\\Local\\Programs\\Tesseract-OCR\\tesseract.exe"
                 pytesseract.tesseract_cmd = caminho_tesseract
 
             texto = pytesseract.image_to_string(caminho_image)
@@ -198,5 +201,5 @@ class TranslatePDF():
 a = TranslatePDF()
 
 # a.extrairIMG(1)
-a.ler("g.pdf", idioma='en', page=0, ret='pdf', check_img=True, caminho_save_img='/home/will/Documentos')
-# # a.lerImg('mao3.jpg')
+a.ler("prova_final.pdf", idioma='pt', page=0)
+# a.lerImg('R.png')
