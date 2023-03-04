@@ -7,6 +7,45 @@ import os
 from fpdf.errors import FPDFUnicodeEncodingException
 
 class TranslatePDF():
+    """
+        A classe TranslatePDF instancia um objeto capaz de extrair texto e imagem de um pdf, extrair texto de um imagem, traduzir
+        textos,  criar pdf a partir de um texto.
+
+        Methods
+        -------
+        extract_data_pdf(
+            self, 
+            caminho: str, 
+            idioma: str, 
+            caminho_save_pdf: Optional[str] = None,
+            page: Optional[int] = None, 
+            interval: Optional[str] = None, 
+            ret: Optional[str] = None,
+            check_img: Optional[bool] = None,
+            caminho_save_img: Optional[str] = None
+            ) -> None
+            Extrai texto do pdf para tradução e o salva em um pdf ou impresso na saída 
+            padrão, e também extrai imagens do pdf e salva no diretório informado ou no
+            diretório do arquivo .py.
+        
+        trans_text_bigger(self, texto, idioma) -> str
+            Traduz o texto extraído para o idioma especificado pelo parâmetro `idioma`. 
+
+        traducao(self, texto, idioma) -> str
+            Método que realiza a tradução de um texto para o idioma especificado.
+        
+        gerarPDF(self, texto, nome_arquivo, caminho_save_pdf) -> None
+            Gera um arquivo PDF a partir de um texto e o salva em um diretório especificado.
+
+        extrairIMG(self, caminho, caminho_save: Optional[str] = None, all: Optional[int] = None) -> None
+            Extrai as imagens de um arquivo PDF.
+        
+        extract_image_page(self, page, caminho_save) -> None
+            Extrai as imagens de uma página do PDF e as salva em um diretório.
+
+        extract_text_img(self, caminho_image, idioma: Optional[str] = None) -> None:
+            Extrai texto de uma imagem usando o OCR do Tesseract.
+    """
 
     def extract_data_pdf(
             self, 
@@ -21,37 +60,37 @@ class TranslatePDF():
             ) -> None:
         
         """
-        Esta método lê um arquivo PDF no caminho especificado pelo parâmetro `caminho`,
-        extrai o texto do PDF, e o traduz para o idioma especificado pelo parâmetro `idioma` 
-        usando uma função chamada `traducao`. O texto traduzido é então salvo em um arquivo 
-        'saida_nomeArquivo.pdf' se o parâmetro `ret` for igual a 'pdf', ou impresso na saída 
-        padrão se o parâmetro `ret` não for especificado ou for diferente de 'pdf'. O método
-        também verifica se há imagens na página, se o parâmentro check_img estiver definido
-        como True.
+            Esta método lê um arquivo PDF no caminho especificado pelo parâmetro `caminho`,
+            extrai o texto do PDF, e o traduz para o idioma especificado pelo parâmetro `idioma` 
+            usando uma função chamada `traducao`. O texto traduzido é então salvo em um arquivo 
+            'saida_nomeArquivo.pdf' se o parâmetro `ret` for igual a 'pdf', ou impresso na saída 
+            padrão se o parâmetro `ret` não for especificado ou for diferente de 'pdf'. O método
+            também verifica se há imagens na página, se o parâmentro check_img estiver definido
+            como True.
 
-        Parameters
-        -----------
-            caminho: str 
-                Caminho para o arquivo PDF.
-            idioma: str 
-                Idioma para o qual o texto deve ser traduzido.
-            caminho_save_pdf: Optional[str]
-                Caminho para salvar o arquivo PDF gerado. Padrão é None.
-            page: Optional[int]
-                Número da página para extrair o texto. Padrão é None.
-            interval: Optional[str]
-                Intervalo de páginas para extrair o texto no formato 'x-y', onde x é o número 
-                da página inicial e y é o número da página final. Padrão é None.
-            ret: Optional[str]
-                Se definido como 'pdf', salva o texto traduzido em um arquivo PDF. Caso contrário,
-                imprime o texto traduzido na saída padrão. Padrão é None.
-            check_img: Optional[bool]
-                Se definido como True, verifica se há imagens na página especificada. Padrão é None.
-            caminho_save_img: Optional[str]
-                Caminho para salvar as imagens extraídas. Padrão é None.
-        Return
-        ------
-            None
+            Parameters
+            -----------
+                caminho: str 
+                    Caminho para o arquivo PDF.
+                idioma: str 
+                    Idioma para o qual o texto deve ser traduzido.
+                caminho_save_pdf: Optional[str]
+                    Caminho para salvar o arquivo PDF gerado. Padrão é None.
+                page: Optional[int]
+                    Número da página para extrair o texto. Padrão é None.
+                interval: Optional[str]
+                    Intervalo de páginas para extrair o texto no formato 'x-y', onde x é o número 
+                    da página inicial e y é o número da página final. Padrão é None.
+                ret: Optional[str]
+                    Se definido como 'pdf', salva o texto traduzido em um arquivo PDF. Caso contrário,
+                    imprime o texto traduzido na saída padrão. Padrão é None.
+                check_img: Optional[bool]
+                    Se definido como True, verifica se há imagens na página especificada. Padrão é None.
+                caminho_save_img: Optional[str]
+                    Caminho para salvar as imagens extraídas. Padrão é None.
+            Return
+            ------
+                None
         """
         
         if os.path.isfile(caminho):
@@ -113,7 +152,7 @@ class TranslatePDF():
         else:
             print("Arquivo não encontrado")
     
-    def trans_text_bigger(self, texto, idioma):
+    def trans_text_bigger(self, texto, idioma) -> str:
         """
             Traduz o texto extraído para o idioma especificado pelo parâmetro `idioma`. 
             
@@ -145,7 +184,7 @@ class TranslatePDF():
             texto2 += self.traducao(texto, idioma)  # Traduz o texto extraído para o idioma especificado pelo parâmetro `idioma`
         return texto2
 
-    def traducao(self, texto, idioma):
+    def traducao(self, texto, idioma) -> str:
         """
             Método que realiza a tradução de um texto para o idioma especificado.
 
@@ -228,7 +267,7 @@ class TranslatePDF():
         else:
             print("Arquivo não encontrado.")
 
-    def extract_image_page(self, page, caminho_save):
+    def extract_image_page(self, page, caminho_save) -> None:
         """
             Extrai as imagens de uma página do PDF e as salva em um diretório.
 
@@ -252,7 +291,7 @@ class TranslatePDF():
         else:
             print('Diretório para salva imagem não encontrado.')
 
-    def extract_text_img(self, caminho_image, idioma: Optional[str] = None):
+    def extract_text_img(self, caminho_image, idioma: Optional[str] = None) -> None:
         """
             Extrai texto de uma imagem usando o OCR do Tesseract.
 
