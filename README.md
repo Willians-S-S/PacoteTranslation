@@ -1,6 +1,9 @@
-# Descrição
+# Descrição <br>
 A classe TranslatePDF é capaz de extrair texto e imagem de um PDF, bem como extrair texto de uma imagem, traduzir textos longos e curtos. Além disso, ela também permite criar um PDF a partir de um texto. <br>
-Acesse: https://pypi.org/project/TranslationPDF/
+Acesse: https://pypi.org/project/translationPdF/ <br>
+
+**Obs:** Ao extrair o texto do PDF ele perde toda a formatação original. <br>
+    Se você usar a extensão Code Runner, não execute o arquivo python por ela, pois irá da erro.
 
 # Funcionabilidades
 * Extrai texto e imagem do PDF <br>
@@ -11,20 +14,19 @@ Acesse: https://pypi.org/project/TranslationPDF/
 * Extrai texto da imagem. <br>
 
 # Como usar
-Siga os passos
 
 ## Importar a biblioteca <br>
 ```python
-    from PDF_read import TranslatePDF
+    from pdftools import pdftools as tools
 ```
 
-## Deve-se Criar um objeto da classe 
+## Criar objeto da classe TranslatePDF
 
 ```python
-    obj = TranslatePDF()  
+    obj = tools.TranslatePDF()  
 ```
 ## Extrair texto e imagem do PDF
-Escopo do método `extract_data_pdf`:<br>
+Parâmetros do método `extract_data_pdf`:<br>
 
 `caminho` => Diretório até o pdf. No windows use / ao invés \ , ex: C:/Users/usuario/Downloads/arquivo.pdf. <br>
 `idioma` => Idioma para o qual o texto será traduzido. <br>
@@ -70,7 +72,7 @@ Usando o método `extract_data_pdf`: <br>
 ```
 ## Traduzir texto curto. (Texto com menos de 500 caracteres) <br>
 
-Escopo do método `traducao`:<br>
+Parâmetros do método `traducao`:<br>
 
 `texto` => Texto que vai ser traduzido <br>
 `idioma` => Idioma em que texto irá ser traduzido. <br> 
@@ -86,7 +88,7 @@ Usando o método `traducao`: <br>
 
 ## Traduzir texto longo. (Texto com mais de 500 caracteres) <br>
 
-Escopo do método `trans_text_bigger`:<br>
+Parâmetros do método `trans_text_bigger`:<br>
 
 `texto` => Texto que vai ser traduzido <br>
 `idioma` => Idioma em que texto irá ser traduzido. <br> 
@@ -101,7 +103,7 @@ Usando o método `trans_text_bigger`: <br>
 ```
 ## Criar PDF. <br>
 
-Escopo do método `gerarPDF`:<br>
+Parâmetros do método `gerarPDF`:<br>
 
 `texto` => Texto para introduzir no PDF. <br>
 `nome_arquivo` => Indica no nome do PDF. <br> 
@@ -117,7 +119,7 @@ Usando o método `gerarPDF`: <br>
 ```
 ## Extrair imagem do PDF. <br>
 
-Escopo do método `extrairIMG`:<br>
+Parâmetros do método `extrairIMG`:<br>
 
 `caminho` => Diretório até o pdf. No windows use / ao invés \ , ex: C:/Users/usuario/Downloads/arquivo.pdf. <br>
 `caminho_save` => Diretório para salvar as imagens do pdf, esse parâmetro é opcional, caso não o use ele salva o pdf no diretorio do script. No windows use / ao invés \ , ex: C:/Users/usuario/Downloads <br> 
@@ -155,7 +157,7 @@ Usando o método `extrairIMG`: <br>
     * Arch Linux e derivados:
         * pip install tesseract
 
-Escopo do método `extract_text_img`:<br>
+Parâmetros do método `extract_text_img`:<br>
 
 `caminho_image` => Diretório da imagem. No windows use / ao invés \ , ex: C:/Users/usuario/Downloads/img.jpg. <br>
 `idioma` => Idioma em que texto irá ser traduzido. <br>
@@ -173,4 +175,117 @@ Usando o método `extract_text_img`: <br>
     obj.extract_text_img(caminho_image="/home/usuario/Documentos/img.png", 
                         idioma='en'
                         )
+```
+## Línguas suportadas
+
+```
+LANGUAGES = {
+    'af': 'afrikaans',
+    'sq': 'albanian',
+    'am': 'amharic',
+    'ar': 'arabic',
+    'hy': 'armenian',
+    'az': 'azerbaijani',
+    'eu': 'basque',
+    'be': 'belarusian',
+    'bn': 'bengali',
+    'bs': 'bosnian',
+    'bg': 'bulgarian',
+    'ca': 'catalan',
+    'ceb': 'cebuano',
+    'ny': 'chichewa',
+    'zh-cn': 'chinese (simplified)',
+    'zh-tw': 'chinese (traditional)',
+    'co': 'corsican',
+    'hr': 'croatian',
+    'cs': 'czech',
+    'da': 'danish',
+    'nl': 'dutch',
+    'en': 'english',
+    'eo': 'esperanto',
+    'et': 'estonian',
+    'tl': 'filipino',
+    'fi': 'finnish',
+    'fr': 'french',
+    'fy': 'frisian',
+    'gl': 'galician',
+    'ka': 'georgian',
+    'de': 'german',
+    'el': 'greek',
+    'gu': 'gujarati',
+    'ht': 'haitian creole',
+    'ha': 'hausa',
+    'haw': 'hawaiian',
+    'iw': 'hebrew',
+    'he': 'hebrew',
+    'hi': 'hindi',
+    'hmn': 'hmong',
+    'hu': 'hungarian',
+    'is': 'icelandic',
+    'ig': 'igbo',
+    'id': 'indonesian',
+    'ga': 'irish',
+    'it': 'italian',
+    'ja': 'japanese',
+    'jw': 'javanese',
+    'kn': 'kannada',
+    'kk': 'kazakh',
+    'km': 'khmer',
+    'ko': 'korean',
+    'ku': 'kurdish (kurmanji)',
+    'ky': 'kyrgyz',
+    'lo': 'lao',
+    'la': 'latin',
+    'lv': 'latvian',
+    'lt': 'lithuanian',
+    'lb': 'luxembourgish',
+    'mk': 'macedonian',
+    'mg': 'malagasy',
+    'ms': 'malay',
+    'ml': 'malayalam',
+    'mt': 'maltese',
+    'mi': 'maori',
+    'mr': 'marathi',
+    'mn': 'mongolian',
+    'my': 'myanmar (burmese)',
+    'ne': 'nepali',
+    'no': 'norwegian',
+    'or': 'odia',
+    'ps': 'pashto',
+    'fa': 'persian',
+    'pl': 'polish',
+    'pt': 'portuguese',
+    'pa': 'punjabi',
+    'ro': 'romanian',
+    'ru': 'russian',
+    'sm': 'samoan',
+    'gd': 'scots gaelic',
+    'sr': 'serbian',
+    'st': 'sesotho',
+    'sn': 'shona',
+    'sd': 'sindhi',
+    'si': 'sinhala',
+    'sk': 'slovak',
+    'sl': 'slovenian',
+    'so': 'somali',
+    'es': 'spanish',
+    'su': 'sundanese',
+    'sw': 'swahili',
+    'sv': 'swedish',
+    'tg': 'tajik',
+    'ta': 'tamil',
+    'te': 'telugu',
+    'th': 'thai',
+    'tr': 'turkish',
+    'uk': 'ukrainian',
+    'ur': 'urdu',
+    'ug': 'uyghur',
+    'uz': 'uzbek',
+    'vi': 'vietnamese',
+    'cy': 'welsh',
+    'xh': 'xhosa',
+    'yi': 'yiddish',
+    'yo': 'yoruba',
+    'zu': 'zulu',
+}
 ```
