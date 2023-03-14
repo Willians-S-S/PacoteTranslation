@@ -4,6 +4,8 @@ __pycache__
 *.jpg
 *.png
 *.txt
+*.zip
+zips
 teste.py
 teste
 __init__.py
