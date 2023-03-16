@@ -1,0 +1,335 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="pt-br" >
+<head>
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Welcome to TranslationPDF’s documentation! &mdash; TranslationPDF 2.0.0 documentation</title>
+      <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+  <!--[if lt IE 9]>
+    <script src="_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+        <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
+        <script src="_static/doctools.js"></script>
+        <script src="_static/sphinx_highlight.js"></script>
+    <script src="_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="#" class="icon icon-home">
+            TranslationPDF
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <!-- Local TOC -->
+              <div class="local-toc"><ul>
+<li><a class="reference internal" href="#">Welcome to TranslationPDF’s documentation!</a><ul>
+<li><a class="reference internal" href="#pdftools.TranslatePDF"><code class="docutils literal notranslate"><span class="pre">TranslatePDF</span></code></a><ul>
+<li><a class="reference internal" href="#pdftools.TranslatePDF.extract_data_pdf"><code class="docutils literal notranslate"><span class="pre">TranslatePDF.extract_data_pdf()</span></code></a></li>
+<li><a class="reference internal" href="#pdftools.TranslatePDF.extract_image_page"><code class="docutils literal notranslate"><span class="pre">TranslatePDF.extract_image_page()</span></code></a></li>
+<li><a class="reference internal" href="#pdftools.TranslatePDF.extract_text_img"><code class="docutils literal notranslate"><span class="pre">TranslatePDF.extract_text_img()</span></code></a></li>
+<li><a class="reference internal" href="#pdftools.TranslatePDF.extrairIMG"><code class="docutils literal notranslate"><span class="pre">TranslatePDF.extrairIMG()</span></code></a></li>
+<li><a class="reference internal" href="#pdftools.TranslatePDF.gerarPDF"><code class="docutils literal notranslate"><span class="pre">TranslatePDF.gerarPDF()</span></code></a></li>
+<li><a class="reference internal" href="#pdftools.TranslatePDF.traducao"><code class="docutils literal notranslate"><span class="pre">TranslatePDF.traducao()</span></code></a></li>
+<li><a class="reference internal" href="#pdftools.TranslatePDF.trans_text_bigger"><code class="docutils literal notranslate"><span class="pre">TranslatePDF.trans_text_bigger()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li><a class="reference internal" href="#indices-and-tables">Indices and tables</a></li>
+</ul>
+</div>
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="#">TranslationPDF</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="#" class="icon icon-home" aria-label="Home"></a></li>
+      <li class="breadcrumb-item active">Welcome to TranslationPDF’s documentation!</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="_sources/index.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="module-pdftools">
+<span id="welcome-to-translationpdf-s-documentation"></span><h1>Welcome to TranslationPDF’s documentation!<a class="headerlink" href="#module-pdftools" title="Permalink to this heading"></a></h1>
+<dl class="py class">
+<dt class="sig sig-object py" id="pdftools.TranslatePDF">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">pdftools.</span></span><span class="sig-name descname"><span class="pre">TranslatePDF</span></span><a class="headerlink" href="#pdftools.TranslatePDF" title="Permalink to this definition"></a></dt>
+<dd><p>A classe TranslatePDF é capaz de extrair texto e imagem de um PDF, bem como extrair texto de uma imagem, traduzir textos longos e curtos. Além disso, ela também permite criar um PDF a partir de um texto.</p>
+<blockquote>
+<div><dl class="simple">
+<dt>extract_data_pdf(</dt><dd><p>self, 
+caminho: str, 
+idioma: str, 
+caminho_save_pdf: Optional[str] = None,
+page: Optional[int] = None, 
+interval: Optional[str] = None, 
+ret: Optional[str] = None,
+check_img: Optional[bool] = None,
+caminho_save_img: Optional[str] = None
+) -&gt; None
+Extrai texto do pdf para tradução e o salva em um pdf ou impresso na saída 
+padrão, e também extrai imagens do pdf e salva no diretório informado ou no
+diretório do arquivo .py.</p>
+</dd>
+<dt>trans_text_bigger(self, texto, idioma) -&gt; str</dt><dd><p>Traduz o texto extraído para o idioma especificado pelo parâmetro <cite>idioma</cite>.</p>
+</dd>
+<dt>traducao(self, texto, idioma) -&gt; str</dt><dd><p>Método que realiza a tradução de um texto para o idioma especificado.</p>
+</dd>
+<dt>gerarPDF(self, texto, nome_arquivo, caminho_save_pdf) -&gt; None</dt><dd><p>Gera um arquivo PDF a partir de um texto e o salva em um diretório especificado.</p>
+</dd>
+<dt>extrairIMG(self, caminho, caminho_save: Optional[str] = None, all: Optional[int] = None) -&gt; None</dt><dd><p>Extrai as imagens de um arquivo PDF.</p>
+</dd>
+<dt>extract_image_page(self, page, caminho_save) -&gt; None</dt><dd><p>Extrai as imagens de uma página do PDF e as salva em um diretório.</p>
+</dd>
+<dt>extract_text_img(self, caminho_image, idioma: Optional[str] = None) -&gt; None:</dt><dd><p>Extrai texto de uma imagem usando o OCR do Tesseract.</p>
+</dd>
+</dl>
+</div></blockquote>
+<dl class="py method">
+<dt class="sig sig-object py" id="pdftools.TranslatePDF.extract_data_pdf">
+<span class="sig-name descname"><span class="pre">extract_data_pdf</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">caminho</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">idioma</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">caminho_save_pdf</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">page</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">interval</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ret</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">check_img</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">caminho_save_img</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="headerlink" href="#pdftools.TranslatePDF.extract_data_pdf" title="Permalink to this definition"></a></dt>
+<dd><p>Esta método lê um arquivo PDF no caminho especificado pelo parâmetro <cite>caminho</cite>,
+extrai o texto do PDF, e o traduz para o idioma especificado pelo parâmetro <cite>idioma</cite> 
+usando uma função chamada <cite>traducao</cite>. O texto traduzido é então salvo em um arquivo 
+‘saida_nomeArquivo.pdf’ se o parâmetro <cite>ret</cite> for igual a ‘pdf’, ou impresso na saída 
+padrão se o parâmetro <cite>ret</cite> não for especificado ou for diferente de ‘pdf’. O método
+também verifica se há imagens na página, se o parâmentro check_img estiver definido
+como True.</p>
+<section id="parameters">
+<h2>Parameters<a class="headerlink" href="#parameters" title="Permalink to this heading"></a></h2>
+<blockquote>
+<div><dl class="simple">
+<dt>caminho: str </dt><dd><p>Caminho para o arquivo PDF.</p>
+</dd>
+<dt>idioma: str </dt><dd><p>Idioma para o qual o texto deve ser traduzido.</p>
+</dd>
+<dt>caminho_save_pdf: Optional[str]</dt><dd><p>Caminho para salvar o arquivo PDF gerado. Padrão é None.</p>
+</dd>
+<dt>page: Optional[int]</dt><dd><p>Número da página para extrair o texto. Padrão é None.</p>
+</dd>
+<dt>interval: Optional[str]</dt><dd><p>Intervalo de páginas para extrair o texto no formato ‘x-y’, onde x é o número 
+da página inicial e y é o número da página final. Padrão é None.</p>
+</dd>
+<dt>ret: Optional[str]</dt><dd><p>Se definido como ‘pdf’, salva o texto traduzido em um arquivo PDF. Caso contrário,
+imprime o texto traduzido na saída padrão. Padrão é None.</p>
+</dd>
+<dt>check_img: Optional[bool]</dt><dd><p>Se definido como True, verifica se há imagens na página especificada. Padrão é None.</p>
+</dd>
+<dt>caminho_save_img: Optional[str]</dt><dd><p>Caminho para salvar as imagens extraídas. Padrão é None.</p>
+</dd>
+</dl>
+</div></blockquote>
+</section>
+<section id="return">
+<h2>Return<a class="headerlink" href="#return" title="Permalink to this heading"></a></h2>
+<blockquote>
+<div><p>None</p>
+</div></blockquote>
+</section>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pdftools.TranslatePDF.extract_image_page">
+<span class="sig-name descname"><span class="pre">extract_image_page</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">page</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">caminho_save</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="headerlink" href="#pdftools.TranslatePDF.extract_image_page" title="Permalink to this definition"></a></dt>
+<dd><p>Extrai as imagens de uma página do PDF e as salva em um diretório.</p>
+<section id="id1">
+<h2>Parameters<a class="headerlink" href="#id1" title="Permalink to this heading"></a></h2>
+<dl class="simple">
+<dt>page: pdfreader.Page</dt><dd><p>Página do PDF a ser processada.</p>
+</dd>
+<dt>caminho_save: str</dt><dd><p>Caminho onde as imagens extraídas serão salvas.</p>
+</dd>
+</dl>
+</section>
+<section id="id2">
+<h2>Return<a class="headerlink" href="#id2" title="Permalink to this heading"></a></h2>
+<blockquote>
+<div><p>None</p>
+</div></blockquote>
+</section>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pdftools.TranslatePDF.extract_text_img">
+<span class="sig-name descname"><span class="pre">extract_text_img</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">caminho_image</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">idioma</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="headerlink" href="#pdftools.TranslatePDF.extract_text_img" title="Permalink to this definition"></a></dt>
+<dd><p>Extrai texto de uma imagem usando o OCR do Tesseract.</p>
+<section id="id3">
+<h2>Parameters<a class="headerlink" href="#id3" title="Permalink to this heading"></a></h2>
+<dl class="simple">
+<dt>caminho_image: str</dt><dd><p>caminho_image: Caminho da imagem a ser processada.</p>
+</dd>
+<dt>idioma: str, optional</dt><dd><p>idioma: Idioma do texto na imagem. Padrão é None.</p>
+</dd>
+</dl>
+</section>
+<section id="id4">
+<h2>Return<a class="headerlink" href="#id4" title="Permalink to this heading"></a></h2>
+<blockquote>
+<div><p>None</p>
+</div></blockquote>
+</section>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pdftools.TranslatePDF.extrairIMG">
+<span class="sig-name descname"><span class="pre">extrairIMG</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">caminho</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">caminho_save</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">all_page</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="headerlink" href="#pdftools.TranslatePDF.extrairIMG" title="Permalink to this definition"></a></dt>
+<dd><p>Extrai as imagens de um arquivo PDF.</p>
+<section id="id5">
+<h2>Parameters<a class="headerlink" href="#id5" title="Permalink to this heading"></a></h2>
+<dl class="simple">
+<dt>caminho: str</dt><dd><p>Caminho do arquivo PDF a ser processado.</p>
+</dd>
+<dt>caminho_save: str, optional </dt><dd><p>Caminho onde as imagens extraídas serão salvas. Se não for especificado, o diretório atual será usado.</p>
+</dd>
+<dt>all_page: int, optional</dt><dd><p>Índice da página que contém a imagem a ser extraída. Se não for especificado, todas as páginas serão processadas.</p>
+</dd>
+</dl>
+</section>
+<section id="id6">
+<h2>Return<a class="headerlink" href="#id6" title="Permalink to this heading"></a></h2>
+<blockquote>
+<div><p>None</p>
+</div></blockquote>
+</section>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pdftools.TranslatePDF.gerarPDF">
+<span class="sig-name descname"><span class="pre">gerarPDF</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">texto</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">nome_arquivo</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">caminho_save_pdf</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="headerlink" href="#pdftools.TranslatePDF.gerarPDF" title="Permalink to this definition"></a></dt>
+<dd><p>Gera um arquivo PDF a partir de um texto e o salva em um diretório especificado.</p>
+<section id="id7">
+<h2>Parameters<a class="headerlink" href="#id7" title="Permalink to this heading"></a></h2>
+<dl class="simple">
+<dt>texto: str</dt><dd><p>o texto que será salvo no arquivo PDF</p>
+</dd>
+<dt>nome_arquivo: str</dt><dd><p>o nome do arquivo PDF a ser gerado</p>
+</dd>
+<dt>caminho_save_pdf: str</dt><dd><p>o caminho onde o arquivo PDF será salvo</p>
+</dd>
+</dl>
+</section>
+<section id="id8">
+<h2>Return<a class="headerlink" href="#id8" title="Permalink to this heading"></a></h2>
+<blockquote>
+<div><p>None
+raises FPDFUnicodeEncodingException: se o texto contém um caractere que não é suportado 
+pela fonte “times”, um erro é lançado e a função imprime uma mensagem de erro.</p>
+</div></blockquote>
+</section>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pdftools.TranslatePDF.traducao">
+<span class="sig-name descname"><span class="pre">traducao</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">texto</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">idioma</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">str</span></span></span><a class="headerlink" href="#pdftools.TranslatePDF.traducao" title="Permalink to this definition"></a></dt>
+<dd><p>Método que realiza a tradução de um texto para o idioma especificado.</p>
+<section id="id9">
+<h2>Parameters<a class="headerlink" href="#id9" title="Permalink to this heading"></a></h2>
+<dl class="simple">
+<dt>texto: str</dt><dd><p>Texto a ser traduzido.</p>
+</dd>
+<dt>idioma: str</dt><dd><p>Idioma para o qual o texto deve ser traduzido.</p>
+</dd>
+</dl>
+</section>
+<section id="retorn">
+<h2>Retorn<a class="headerlink" href="#retorn" title="Permalink to this heading"></a></h2>
+<blockquote>
+<div><p>Retorna o texto traduzido para o idioma especificado.</p>
+</div></blockquote>
+</section>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pdftools.TranslatePDF.trans_text_bigger">
+<span class="sig-name descname"><span class="pre">trans_text_bigger</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">texto</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">idioma</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">str</span></span></span><a class="headerlink" href="#pdftools.TranslatePDF.trans_text_bigger" title="Permalink to this definition"></a></dt>
+<dd><p>Traduz o texto extraído para o idioma especificado pelo parâmetro <cite>idioma</cite>.</p>
+<section id="id10">
+<h2>Parameters<a class="headerlink" href="#id10" title="Permalink to this heading"></a></h2>
+<dl class="simple">
+<dt>texto: str</dt><dd><p>O texto extraído do arquivo PDF.</p>
+</dd>
+<dt>idioma: str </dt><dd><p>O idioma para o qual o texto será traduzido.</p>
+</dd>
+</dl>
+</section>
+<section id="id11">
+<h2>Return<a class="headerlink" href="#id11" title="Permalink to this heading"></a></h2>
+<p>Retorna o texto traduzido.</p>
+</section>
+</dd></dl>
+
+</dd></dl>
+
+<div class="toctree-wrapper compound">
+</div>
+</section>
+<section id="indices-and-tables">
+<h1>Indices and tables<a class="headerlink" href="#indices-and-tables" title="Permalink to this heading"></a></h1>
+<ul class="simple">
+<li><p><a class="reference internal" href="genindex.html"><span class="std std-ref">Index</span></a></p></li>
+<li><p><a class="reference internal" href="py-modindex.html"><span class="std std-ref">Module Index</span></a></p></li>
+<li><p><a class="reference internal" href="search.html"><span class="std std-ref">Search Page</span></a></p></li>
+</ul>
+</section>
+
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2023, Filipe e Willians.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>
